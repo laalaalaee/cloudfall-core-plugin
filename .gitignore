@@ -1,0 +1,41 @@
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Java/Maven/Gradle
+target/
+build/
+*.jar
+*.class
+.gradle/
+build.gradle
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Archives & Data
+*.zip
+*.tar.gz
+*.sql
+*.csv
+*.sqlite
+*.db
+
+# OS
+.DS_Store
+Thumbs.db

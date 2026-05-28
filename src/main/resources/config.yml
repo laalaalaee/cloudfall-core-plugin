@@ -1,0 +1,56 @@
+# CloudFallCore Configuration
+
+# Messages and Links
+messages:
+  support:
+    - "<color:#00ffff><bold>CLOUDFALL STORE</bold></color>"
+    - "<gray>Donate to us and help <light_purple>support</light_purple> the</gray>"
+    - "<gray>Server! Purchase ranks,</gray>"
+    - "<gray>keys, coins and more at our store!</gray>"
+    - ""
+    - "<click:open_url:'https://playstorm.cloud/minecraft'><hover:show_text:'Click to visit our store'><color:#ff00ff>↪ playstorm.cloud/minecraft</color></hover></click>"
+    - ""
+    - "<color:#00ffff><bold>CLOUDFALL DISCORD</bold></color>"
+    - "<gray>Stay up to date with all <aqua>announcements</aqua>,</gray>"
+    - "<gray><aqua>giveaways</aqua>, events and much more! Join</gray>"
+    - "<gray>the CLOUDFALL Community Discord today!</gray>"
+    - ""
+    - "<click:open_url:'https://discord.gg/3CCtPATgXa'><hover:show_text:'Click to join Discord'><color:#00ffff>↪ discord.gg/3CCtPATgXa</color></hover></click>"
+
+  buykits:
+    - "<color:#ffaa00><bold>CloudFall Kits</bold></color>"
+    - "<gray>Died and lost your items? You can purchase kits to get back in the game quickly!</gray>"
+    - "<click:open_url:'https://playstorm.cloud/minecraft'><hover:show_text:'Click to view kits'><color:#00ff00>↪ Click here to view kits on the Store!</color></hover></click>"
+
+# Auto-Broadcaster settings (in minutes)
+broadcaster:
+  enabled: true
+  interval: 5
+  messages:
+    - "<color:#ff5555>❤</color> <gray>Love playing on CloudFall SMP?</gray> <click:open_url:'https://playstorm.cloud/minecraft'><hover:show_text:'Click here!'><color:#55ff55><bold>Support the server by buying ranks and more here!</bold></color></hover></click>"
+    - "<color:#5555ff>☁</color> <gray>Don't forget to join our Discord community!</gray> <click:open_url:'https://discord.gg/3CCtPATgXa'><hover:show_text:'Click to join'><color:#55ffff><bold>discord.gg/3CCtPATgXa</bold></color></hover></click>"
+
+# Fun/Horror Mechanics
+mechanics:
+  cave-horror:
+    enabled: true
+    # The chance (out of 100) to play a creepy sound every 10 seconds when deep underground
+    chance: 15
+    y-level: 10
+  blood-moon:
+    enabled: true
+    # Chance (out of 100) for a blood moon to happen each nightfall
+    chance: 10
+
+# Living World Engine Settings
+engine:
+  enabled: true
+  min-interval-minutes: 3
+  max-interval-minutes: 8
+  category-weights:
+    weather: 18
+    horror: 20
+    reward: 30
+    combat: 7
+    social: 15
+    mystery: 10

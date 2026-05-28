@@ -1,0 +1,15 @@
+name: CloudFallCore
+version: '${project.version}'
+main: cloud.playstorm.cloudfallcore.CloudFallCore
+api-version: '1.21'
+authors: [ "Antigravity" ]
+description: Core plugin for CloudFall SMP with support, ranks, and fun mechanics.
+
+commands:
+  support:
+    description: Shows the server support/store link
+    aliases: [ "website", "store", "discord" ]
+  buyrank:
+    description: Shows rank information
+  buykits:
+    description: Shows how to buy kits to get items back
