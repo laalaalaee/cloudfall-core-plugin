@@ -11,6 +11,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -22,9 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MeteorShowerEvent implements ServerEvent {
+public class MeteorShowerEvent implements ServerEvent, Listener {
 
     private BukkitTask task;
+    private boolean active = false;
 
     @Override
     public String getId() { return "weather.meteor_shower"; }
@@ -47,6 +52,14 @@ public class MeteorShowerEvent implements ServerEvent {
     @Override
     public void execute(Player target) { }
 
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (active && event.getEntity() instanceof Fireball) {
+            // Prevent meteor fireballs from breaking blocks
+            event.blockList().clear();
+        }
+    }
+
     @Override
     public void execute() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("CloudFallCore");
@@ -54,6 +67,9 @@ public class MeteorShowerEvent implements ServerEvent {
 
         List<? extends Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
         if (players.isEmpty()) return;
+
+        active = true;
+        Bukkit.getPluginManager().registerEvents(this, plugin);
 
         // Pick a random player's location as the center
         Player chosen = players.get(ThreadLocalRandom.current().nextInt(players.size()));
@@ -69,7 +85,7 @@ public class MeteorShowerEvent implements ServerEvent {
         ));
         MessageUtil.broadcastTitle(
                 "<color:#ff6600>☄️ Meteor Shower!</color>",
-                "<gray>Take cover!</gray>",
+                "<gray>Take cover! (No block damage)</gray>",
                 20, 60, 20
         );
 
@@ -82,7 +98,10 @@ public class MeteorShowerEvent implements ServerEvent {
                 if (count >= 10) {
                     cancel();
                     // Schedule chest placement after 60 ticks
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> spawnLootChest(center), 60L);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        spawnLootChest(center);
+                        cleanup();
+                    }, 60L);
                     return;
                 }
 
@@ -94,7 +113,7 @@ public class MeteorShowerEvent implements ServerEvent {
 
                     center.getWorld().spawn(spawnLoc, Fireball.class, fireball -> {
                         fireball.setDirection(new Vector(0, -1, 0));
-                        fireball.setYield(2.0f);
+                        fireball.setYield(3.0f);
                         fireball.setIsIncendiary(false);
                     });
                 } catch (Exception ignored) { }
@@ -131,6 +150,8 @@ public class MeteorShowerEvent implements ServerEvent {
 
     @Override
     public void cleanup() {
+        active = false;
+        HandlerList.unregisterAll(this);
         if (task != null && !task.isCancelled()) {
             task.cancel();
             task = null;

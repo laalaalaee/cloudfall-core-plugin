@@ -54,3 +54,96 @@ engine:
     combat: 7
     social: 15
     mystery: 10
+
+events:
+  # Weather (8)
+  weather.acid_rain:
+    enabled: true
+  weather.meteor_shower:
+    enabled: true
+  weather.solar_eclipse:
+    enabled: true
+  weather.thunderstorm_of_gods:
+    enabled: true
+  weather.falling_stars:
+    enabled: true
+  weather.crop_blessing:
+    enabled: true
+  weather.ore_vein:
+    enabled: true
+  weather.the_fog:
+    enabled: true
+
+  # Horror (10)
+  horror.whispers:
+    enabled: true
+  horror.phantom_footsteps:
+    enabled: true
+  horror.the_screamer:
+    enabled: true
+  horror.stalker_notification:
+    enabled: true
+  horror.heartbeat:
+    enabled: true
+  horror.fake_player_join:
+    enabled: true
+  horror.the_countdown:
+    enabled: true
+  horror.door_sounds:
+    enabled: true
+  horror.cave_breathing:
+    enabled: true
+  horror.inventory_shuffle:
+    enabled: true
+
+  # Reward (8)
+  reward.lucky_player:
+    enabled: true
+  reward.supply_drop:
+    enabled: true
+  reward.xp_rain:
+    enabled: true
+  reward.full_heal:
+    enabled: true
+  reward.treasure_map:
+    enabled: true
+  reward.free_food:
+    enabled: true
+  reward.beacon_buff:
+    enabled: true
+  reward.golden_hour:
+    enabled: true
+
+  # Combat (5)
+  combat.zombie_siege:
+    enabled: true
+  combat.boss_spawn:
+    enabled: true
+  combat.creeper_swarm:
+    enabled: true
+  combat.phantom_flock:
+    enabled: true
+  combat.witch_circle:
+    enabled: true
+
+  # Social (5)
+  social.server_compliment:
+    enabled: true
+  social.firework_show:
+    enabled: true
+  social.photo_bomb:
+    enabled: true
+  social.server_trivia:
+    enabled: true
+  social.dare_system:
+    enabled: true
+
+  # Mystery (4)
+  mystery.the_merchant:
+    enabled: true
+  mystery.enchanted_coords:
+    enabled: true
+  mystery.dimensional_rift:
+    enabled: true
+  mystery.buried_treasure:
+    enabled: true
