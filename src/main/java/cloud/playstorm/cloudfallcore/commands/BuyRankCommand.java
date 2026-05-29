@@ -21,7 +21,14 @@ public class BuyRankCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> messages = plugin.getConfig().getStringList("messages.buyrank");
+        boolean enabled = plugin.getConfig().getBoolean("commands.buyrank.enabled", true);
+        if (!enabled) {
+            String disabledMsg = plugin.getConfig().getString("commands.buyrank.disabled-message", "<red>This command is currently disabled.</red>");
+            sender.sendMessage(miniMessage.deserialize(disabledMsg));
+            return true;
+        }
+
+        List<String> messages = plugin.getConfig().getStringList("commands.buyrank.messages");
         for (String msg : messages) {
             if (msg.isEmpty()) {
                 sender.sendMessage(Component.empty());

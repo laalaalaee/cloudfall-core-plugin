@@ -21,7 +21,14 @@ public class SupportCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> messages = plugin.getConfig().getStringList("messages.support");
+        boolean enabled = plugin.getConfig().getBoolean("commands.support.enabled", true);
+        if (!enabled) {
+            String disabledMsg = plugin.getConfig().getString("commands.support.disabled-message", "<red>This command is currently disabled.</red>");
+            sender.sendMessage(miniMessage.deserialize(disabledMsg));
+            return true;
+        }
+
+        List<String> messages = plugin.getConfig().getStringList("commands.support.messages");
         for (String msg : messages) {
             if (msg.isEmpty()) {
                 sender.sendMessage(Component.empty());

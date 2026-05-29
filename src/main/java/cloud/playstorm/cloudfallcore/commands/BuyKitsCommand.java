@@ -21,7 +21,14 @@ public class BuyKitsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> messages = plugin.getConfig().getStringList("messages.buykits");
+        boolean enabled = plugin.getConfig().getBoolean("commands.buykits.enabled", true);
+        if (!enabled) {
+            String disabledMsg = plugin.getConfig().getString("commands.buykits.disabled-message", "<red>This command is currently disabled.</red>");
+            sender.sendMessage(miniMessage.deserialize(disabledMsg));
+            return true;
+        }
+
+        List<String> messages = plugin.getConfig().getStringList("commands.buykits.messages");
         for (String msg : messages) {
             if (msg.isEmpty()) {
                 sender.sendMessage(Component.empty());

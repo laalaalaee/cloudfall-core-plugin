@@ -1,10 +1,15 @@
-name: Build Plugin
+name: Build and Release Plugin
 
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - "v*"
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -28,3 +33,14 @@ jobs:
       with:
         name: CloudFallCore-Plugin
         path: target/CloudFallCore-*.jar
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: target/CloudFallCore-*.jar
+        name: CloudFallCore ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
