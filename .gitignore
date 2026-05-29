@@ -39,3 +39,7 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Live Server Backup Config
+config-smp-backup.yml
+
