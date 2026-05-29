@@ -113,4 +113,4 @@ If you want to compile the code yourself, this project requires **Java 21** and 
 4. The compiled JAR will be located in the `target/` directory as `CloudFallCore-1.1.0.jar`. Drop this into your server's `plugins/` folder and restart!
 
 ---
-*Built with ❤️ for the Minecraft Community.*
+*Built with ❤️ by laalaalaee*
