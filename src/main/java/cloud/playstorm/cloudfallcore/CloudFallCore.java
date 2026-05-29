@@ -17,7 +17,7 @@ public final class CloudFallCore extends JavaPlugin {
         saveDefaultConfig();
 
         getCommand("support").setExecutor(new SupportCommand(this));
-        getCommand("buyrank").setExecutor(new BuyRankCommand());
+        getCommand("buyrank").setExecutor(new BuyRankCommand(this));
         getCommand("buykits").setExecutor(new BuyKitsCommand(this));
 
         broadcaster = new AutoBroadcaster(this);
