@@ -40,6 +40,12 @@ jobs:
       with:
         files: target/CloudFallCore-*.jar
         name: CloudFallCore ${{ github.ref_name }}
+        body: |
+          ## What's Changed in v1.1.0
+          * ⚙️ **Toggleable Utility Commands**: You can now enable/disable `/buyrank`, `/buykits`, and `/support` individually in `config.yml`.
+          * 💬 **Customizable Command Responses**: Added custom message arrays and customizable `disabled-message` fields for disabled commands.
+          * 📦 **Automatic Builds**: Integrated automated GitHub Actions to compile and attach the plugin JAR as a release asset.
+          * ☁️ **Clean Config Template**: Default configuration is sanitized with general placeholders, keeping server-specific branding separate.
         draft: false
         prerelease: false
       env:
