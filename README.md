@@ -3,7 +3,7 @@
   <p><i>The ultimate Living World Engine and Core Utility plugin for Spigot & Paper.</i></p>
 
   <img src="https://img.shields.io/badge/Paper-1.21-green.svg" alt="Paper 1.21" />
-  <img src="https://img.shields.io/badge/Java-21+-blue.svg" alt="Java 21+" />
+  <img src="https://img.shields.io/badge/Java-25+-blue.svg" alt="Java 25+" />
   <img src="https://img.shields.io/badge/Events-40-orange.svg" alt="40 Random Events" />
   <img src="https://img.shields.io/badge/Version-1.1.0-red.svg" alt="v1.1.0" />
 </div>
@@ -90,13 +90,13 @@ The easiest way to install CloudFall Core is to download the pre-compiled JAR:
 1. Go to the **[Releases](https://github.com/laalaalaee/cloudfall-core-plugin/releases)** tab on the right side of this repository.
 2. Download the latest `CloudFallCore-1.1.0.jar`.
 3. Drop it into your server's `plugins/` folder and restart your server.
-*(Note: This plugin is compiled for Java 21. It is fully forward-compatible and works perfectly on servers running Java 21, 22, 23, 24, and 25).*
+*(Note: This plugin is compiled for Java 25. It is fully forward-compatible and works perfectly on servers running Java 25 and newer).*
 
 ---
 
 ## 🛠️ Building from Source
 
-If you want to compile the code yourself, this project requires **Java 21** and **Maven**.
+If you want to compile the code yourself, this project requires **Java 25** and **Maven**.
 
 1. Clone the repository:
    ```bash

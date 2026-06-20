@@ -1,7 +1,477 @@
-# CloudFallCore Configuration
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║                                                                    ║
+# ║                       C L O U D F A L L   C O R E                  ║
+# ║                A Living World Engine for your server               ║
+# ║                                                                    ║
+# ║   Author : laalaalaee                                              ║
+# ║   GitHub : https://github.com/laalaalaee/cloudfall-core-plugin     ║
+# ║                                                                    ║
+# ║   EVERYTHING here is editable. Tune it to fit your server, big     ║
+# ║   or small. Reload changes live with: /cloudfall reload            ║
+# ║                                                                    ║
+# ╚══════════════════════════════════════════════════════════════════╝
 
-# Messages and Links
-# Command Configurations
+
+# ═══════════════════════════════════════════════════════════════════
+#  GENERAL
+# ═══════════════════════════════════════════════════════════════════
+general:
+  # Warn the console when a newer version is available on GitHub.
+  check-for-updates: true
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  ECONOMY  (optional - needs Vault + an economy plugin like EssentialsX)
+# ═══════════════════════════════════════════════════════════════════
+#  Many reward events can pay players currency. If you have no economy
+#  plugin, leave this on - currency rewards simply do nothing and the
+#  rest of the plugin works perfectly fine.
+# ───────────────────────────────────────────────────────────────────
+economy:
+  enabled: true
+  currency-symbol: "$"
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  LIVING WORLD ENGINE
+# ═══════════════════════════════════════════════════════════════════
+#  The engine fires a random event every few minutes. It picks a
+#  CATEGORY first (using category-weights below), then picks an event
+#  inside that category (using each event's own "weight").
+# ───────────────────────────────────────────────────────────────────
+engine:
+  enabled: true
+  # Random gap between events (a value is chosen between these two).
+  min-interval-minutes: 3
+  max-interval-minutes: 8
+
+  # How likely each CATEGORY is to be chosen. Higher = more often.
+  category-weights:
+    weather: 18
+    horror: 20
+    reward: 30
+    combat: 7
+    social: 15
+    mystery: 10
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  EVENTS
+# ═══════════════════════════════════════════════════════════════════
+#  Every event supports these keys:
+#     enabled          true/false - turn the event on or off
+#     weight           relative chance inside its category (higher = more often)
+#     cooldown-minutes minimum time before this event can repeat
+#     duration-seconds how long timed events run before they clean up
+#     settings:        per-event knobs (loot, distance, currency, etc.)
+#
+#  Any key you leave out falls back to a sensible built-in default,
+#  so you only need to write the lines you actually want to change.
+# ───────────────────────────────────────────────────────────────────
+events:
+
+  # ───────────── WEATHER & WORLD ─────────────
+  weather.acid_rain:
+    enabled: true
+    weight: 10
+  weather.meteor_shower:
+    enabled: true
+    weight: 10
+  weather.solar_eclipse:
+    enabled: true
+    weight: 10
+    duration-seconds: 300
+  weather.thunderstorm_of_gods:
+    enabled: true
+    weight: 10
+  weather.falling_stars:
+    enabled: true
+    weight: 10
+  weather.crop_blessing:
+    enabled: true
+    weight: 10
+  weather.ore_vein:
+    enabled: true
+    weight: 10
+  weather.the_fog:
+    enabled: true
+    weight: 10
+    duration-seconds: 180
+  weather.aurora:
+    enabled: true
+    weight: 10
+    cooldown-minutes: 30
+    duration-seconds: 180
+
+  # ───────────── HORROR & PSYCHOLOGICAL ─────────────
+  # Atmospheric scares. Set enabled:false on any that feel too much.
+  horror.whispers:
+    enabled: true
+    weight: 10
+  horror.phantom_footsteps:
+    enabled: true
+    weight: 10
+  horror.the_screamer:
+    enabled: true
+    weight: 10
+  horror.stalker_notification:
+    enabled: true
+    weight: 10
+  horror.heartbeat:
+    enabled: true
+    weight: 10
+  horror.fake_player_join:
+    enabled: true
+    weight: 10
+  horror.the_countdown:
+    enabled: true
+    weight: 10
+  horror.door_sounds:
+    enabled: true
+    weight: 10
+  horror.cave_breathing:
+    enabled: true
+    weight: 10
+  horror.inventory_shuffle:
+    enabled: true
+    weight: 6   # the spiciest one - lower weight by default
+
+  # ───────────── REWARD & LOOT ─────────────
+  reward.lucky_player:
+    enabled: true
+    weight: 10
+  reward.supply_drop:
+    enabled: true
+    weight: 10
+    duration-seconds: 600    # chest despawns after this if left
+    settings:
+      min-distance: 120      # blocks from a player (fixes "spawns on top of you")
+      max-distance: 300
+  reward.xp_rain:
+    enabled: true
+    weight: 10
+  reward.full_heal:
+    enabled: true
+    weight: 10
+  reward.treasure_map:
+    enabled: true
+    weight: 10
+  reward.free_food:
+    enabled: true
+    weight: 10
+  reward.beacon_buff:
+    enabled: true
+    weight: 10
+  reward.golden_hour:
+    enabled: true
+    weight: 8
+
+  # --- NEW in 2.0 ---
+  reward.bank_overflow:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 40
+    settings:
+      amount: 2000           # currency paid to every online player
+  reward.gift_drop:
+    enabled: true
+    weight: 12
+    cooldown-minutes: 25
+    settings:
+      currency-reward: 0     # optional bonus currency on top of the item
+  reward.mining_frenzy:
+    enabled: true
+    weight: 10
+    cooldown-minutes: 35
+    duration-seconds: 300
+    settings:
+      haste-level: 2         # Haste potion level
+      bonus-multiplier: 2    # 2 = ores drop double
+  reward.heros_blessing:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 45
+    duration-seconds: 240
+    settings:
+      # Format: EFFECT:AMPLIFIER (amplifier 0 = level I)
+      effects:
+        - "REGENERATION:0"
+        - "SPEED:0"
+        - "RESISTANCE:0"
+        - "LUCK:0"
+  reward.gold_rush:
+    enabled: true
+    weight: 7
+    cooldown-minutes: 50
+    duration-seconds: 360
+    settings:
+      goal: 150              # gold ore/blocks the server must mine together
+      reward-currency: 1500  # paid to each contributor
+      reward-diamonds: 8
+  reward.lottery:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 40
+    settings:
+      jackpot: 5000          # currency for the single winner
+      jackpot-diamonds: 10
+  reward.double_coins_hour:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 45
+    duration-seconds: 300
+    settings:
+      per-kill: 25           # currency per mob kill while active
+  reward.mob_bounty:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 35
+    duration-seconds: 300
+    settings:
+      per-kill: 50
+      targets:               # one is chosen at random each time
+        - "ZOMBIE"
+        - "SKELETON"
+        - "CREEPER"
+        - "SPIDER"
+        - "ENDERMAN"
+  reward.fishing_frenzy:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 35
+    duration-seconds: 240
+    settings:
+      treasure-chance: 60    # % chance of bonus loot per catch
+      per-catch-currency: 0
+  reward.migrating_herd:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 30
+    settings:
+      herd-size: 8
+      animals:
+        - "COW"
+        - "SHEEP"
+        - "PIG"
+        - "CHICKEN"
+  reward.harvest_festival:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 30
+    settings:
+      radius: 8              # crops within this many blocks of players ripen
+
+  # ───────────── COMBAT & CHALLENGE ─────────────
+  combat.zombie_siege:
+    enabled: true
+    weight: 10
+  combat.boss_spawn:
+    enabled: true
+    weight: 10
+  combat.creeper_swarm:
+    enabled: true
+    weight: 10
+  combat.phantom_flock:
+    enabled: true
+    weight: 10
+  combat.witch_circle:
+    enabled: true
+    weight: 10
+
+  # --- NEW in 2.0 ---
+  combat.world_boss:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 45
+    duration-seconds: 420    # boss escapes if not killed in time
+    settings:
+      entity-type: "RAVAGER" # any Minecraft mob, e.g. RAVAGER, WITHER_SKELETON, IRON_GOLEM
+      health: 300
+      spawn-distance: 30
+      boss-name: "<red>The Devourer</red>"
+      reward-currency: 3000
+      reward-diamonds: 12
+      reward-netherite: 1
+  combat.wave_defense:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 40
+    duration-seconds: 300
+    settings:
+      waves: 5
+      mobs-per-wave: 4       # grows by +1 each wave
+      reward-currency: 1200
+      mobs:
+        - "ZOMBIE"
+        - "SKELETON"
+        - "SPIDER"
+  combat.king_of_the_hill:
+    enabled: true
+    weight: 7
+    cooldown-minutes: 45
+    duration-seconds: 300
+    settings:
+      control-seconds: 45    # uncontested time needed to win
+      radius: 5              # how close you must be to hold the point
+      reward-currency: 2000
+      reward-diamonds: 10
+  combat.hunt_quota:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 40
+    duration-seconds: 300
+    settings:
+      goal: 100              # monsters the server must slay together
+      reward-currency: 1500
+      reward-diamonds: 6
+  combat.anvil_rain:
+    enabled: true
+    weight: 6
+    cooldown-minutes: 40
+    duration-seconds: 90
+    settings:
+      anvils-per-tick: 2     # per player, every ~0.75s
+      reward-currency: 800
+
+  # ───────────── SOCIAL & FUN ─────────────
+  social.server_compliment:
+    enabled: true
+    weight: 10
+  social.firework_show:
+    enabled: true
+    weight: 10
+  social.photo_bomb:
+    enabled: true
+    weight: 10
+  social.server_trivia:
+    enabled: true
+    weight: 10
+    settings:
+      timeout-seconds: 45
+      currency-reward: 500
+      reward-diamonds: 3
+      # Write your own! Format: "Question?|answer"
+      questions:
+        - "What block do you mine to make a Nether portal?|obsidian"
+        - "Which mob explodes when it gets close to you?|creeper"
+        - "What do you feed a horse to breed it?|golden apple"
+        - "What ore is needed to make a clock?|gold"
+        - "Which Nether mob drops blaze rods?|blaze"
+        - "What tool do you need to mine diamonds?|iron pickaxe"
+        - "What item lets you fly in survival (with rockets)?|elytra"
+  social.dare_system:
+    enabled: true
+    weight: 10
+  social.quick_math:
+    enabled: true
+    weight: 10
+    cooldown-minutes: 20
+    settings:
+      timeout-seconds: 30
+      currency-reward: 500
+      reward-diamonds: 3
+  social.reaction_test:
+    enabled: true
+    weight: 10
+    cooldown-minutes: 20
+    settings:
+      currency-reward: 500
+      reward-diamonds: 3
+  social.unscramble:
+    enabled: true
+    weight: 10
+    cooldown-minutes: 20
+    settings:
+      timeout-seconds: 30
+      currency-reward: 500
+      reward-diamonds: 3
+      words:
+        - "diamond"
+        - "creeper"
+        - "minecraft"
+        - "redstone"
+        - "enderman"
+        - "village"
+        - "netherite"
+        - "obsidian"
+
+  # ───────────── MYSTERY & EXPLORATION ─────────────
+  mystery.the_merchant:
+    enabled: true
+    weight: 10
+  mystery.enchanted_coords:
+    enabled: true
+    weight: 10
+  mystery.dimensional_rift:
+    enabled: true
+    weight: 10
+  mystery.buried_treasure:
+    enabled: true
+    weight: 10
+
+  # --- NEW in 2.0 ---
+  mystery.treasure_hunt:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 45
+    duration-seconds: 600    # vault crumbles if never found
+    settings:
+      min-distance: 200      # how far the vault is buried
+      max-distance: 500
+      currency-reward: 0     # optional bonus to the first finder
+  mystery.loot_meteor:
+    enabled: true
+    weight: 9
+    cooldown-minutes: 40
+    duration-seconds: 600    # crash site vanishes if not looted
+    settings:
+      min-distance: 80
+      max-distance: 200
+      guards: 3              # monsters defending the loot
+      guard-type: "BLAZE"
+  mystery.relic_hunt:
+    enabled: true
+    weight: 8
+    cooldown-minutes: 35
+    duration-seconds: 240    # unfound relics vanish after this
+    settings:
+      relic-count: 6
+      spread: 40             # how far relics scatter from the anchor
+      currency-per-relic: 400
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  AUTO-BROADCASTER  (timed promo messages)
+# ═══════════════════════════════════════════════════════════════════
+broadcaster:
+  enabled: true
+  interval: 5   # minutes
+  messages:
+    - "<color:#ff5555>❤</color> <gray>Love playing on our server?</gray> <click:open_url:'https://store.yourserver.com'><hover:show_text:'Click here!'><color:#55ff55><bold>Support us by buying ranks and more here!</bold></color></hover></click>"
+    - "<color:#5555ff>☁</color> <gray>Don't forget to join our Discord community!</gray> <click:open_url:'https://discord.gg/yourinvite'><hover:show_text:'Click to join'><color:#55ffff><bold>discord.gg/yourinvite</bold></color></hover></click>"
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  AMBIENT MECHANICS  (passive background flavour)
+# ═══════════════════════════════════════════════════════════════════
+mechanics:
+  cave-horror:
+    enabled: true
+    # Chance (out of 100) to play a creepy sound every 10s when deep underground.
+    chance: 15
+    y-level: 10
+  blood-moon:
+    enabled: true
+    # Chance (out of 100) for a blood moon each nightfall.
+    chance: 10
+
+
+# ═══════════════════════════════════════════════════════════════════
+#  COMMANDS  (/support, /buykits, /buyrank)
+# ═══════════════════════════════════════════════════════════════════
+#  Each command can be enabled/disabled and its message fully rewritten.
+#  Uses MiniMessage formatting (gradients, clicks, hovers, colours).
+# ───────────────────────────────────────────────────────────────────
 commands:
   support:
     enabled: true
@@ -77,130 +547,3 @@ commands:
       - "<gray>- Permanent ❤️ emoji on Tab</gray>"
       - "<gray>- Our eternal gratitude</gray>"
       - "<click:open_url:'https://store.yourserver.com'><hover:show_text:'Click to Tip'><color:#ff5555>[ Support Us ]</color></hover></click>"
-    - ""
-
-# Auto-Broadcaster settings (in minutes)
-broadcaster:
-  enabled: true
-  interval: 5
-  messages:
-    - "<color:#ff5555>❤</color> <gray>Love playing on our server?</gray> <click:open_url:'https://store.yourserver.com'><hover:show_text:'Click here!'><color:#55ff55><bold>Support us by buying ranks and more here!</bold></color></hover></click>"
-    - "<color:#5555ff>☁</color> <gray>Don't forget to join our Discord community!</gray> <click:open_url:'https://discord.gg/yourinvite'><hover:show_text:'Click to join'><color:#55ffff><bold>discord.gg/yourinvite</bold></color></hover></click>"
-
-# Fun/Horror Mechanics
-mechanics:
-  cave-horror:
-    enabled: true
-    # The chance (out of 100) to play a creepy sound every 10 seconds when deep underground
-    chance: 15
-    y-level: 10
-  blood-moon:
-    enabled: true
-    # Chance (out of 100) for a blood moon to happen each nightfall
-    chance: 10
-
-# Living World Engine Settings
-engine:
-  enabled: true
-  min-interval-minutes: 3
-  max-interval-minutes: 8
-  category-weights:
-    weather: 18
-    horror: 20
-    reward: 30
-    combat: 7
-    social: 15
-    mystery: 10
-
-events:
-  # Weather (8)
-  weather.acid_rain:
-    enabled: true
-  weather.meteor_shower:
-    enabled: true
-  weather.solar_eclipse:
-    enabled: true
-  weather.thunderstorm_of_gods:
-    enabled: true
-  weather.falling_stars:
-    enabled: true
-  weather.crop_blessing:
-    enabled: true
-  weather.ore_vein:
-    enabled: true
-  weather.the_fog:
-    enabled: true
-
-  # Horror (10)
-  horror.whispers:
-    enabled: true
-  horror.phantom_footsteps:
-    enabled: true
-  horror.the_screamer:
-    enabled: true
-  horror.stalker_notification:
-    enabled: true
-  horror.heartbeat:
-    enabled: true
-  horror.fake_player_join:
-    enabled: true
-  horror.the_countdown:
-    enabled: true
-  horror.door_sounds:
-    enabled: true
-  horror.cave_breathing:
-    enabled: true
-  horror.inventory_shuffle:
-    enabled: true
-
-  # Reward (8)
-  reward.lucky_player:
-    enabled: true
-  reward.supply_drop:
-    enabled: true
-  reward.xp_rain:
-    enabled: true
-  reward.full_heal:
-    enabled: true
-  reward.treasure_map:
-    enabled: true
-  reward.free_food:
-    enabled: true
-  reward.beacon_buff:
-    enabled: true
-  reward.golden_hour:
-    enabled: true
-
-  # Combat (5)
-  combat.zombie_siege:
-    enabled: true
-  combat.boss_spawn:
-    enabled: true
-  combat.creeper_swarm:
-    enabled: true
-  combat.phantom_flock:
-    enabled: true
-  combat.witch_circle:
-    enabled: true
-
-  # Social (5)
-  social.server_compliment:
-    enabled: true
-  social.firework_show:
-    enabled: true
-  social.photo_bomb:
-    enabled: true
-  social.server_trivia:
-    enabled: true
-  social.dare_system:
-    enabled: true
-
-  # Mystery (4)
-  mystery.the_merchant:
-    enabled: true
-  mystery.enchanted_coords:
-    enabled: true
-  mystery.dimensional_rift:
-    enabled: true
-  mystery.buried_treasure:
-    enabled: true

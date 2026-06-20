@@ -40,6 +40,8 @@ env/
 .DS_Store
 Thumbs.db
 
-# Live Server Backup Config
+# Personal / private files — never publish these (real links, pricing, live jar)
+private/
 config-smp-backup.yml
+config-cloudfall-smp.yml
 

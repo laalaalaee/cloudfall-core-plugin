@@ -24,7 +24,7 @@ public class DareSystemEvent implements ServerEvent, Listener {
     private boolean listenerRegistered = false;
 
     @Override
-    public String getId() { return "dare_system"; }
+    public String getId() { return "social.dare_system"; }
     @Override
     public String getDisplayName() { return "Dare System"; }
     @Override

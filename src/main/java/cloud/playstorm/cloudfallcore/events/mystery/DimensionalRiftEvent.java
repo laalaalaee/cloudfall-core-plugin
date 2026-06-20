@@ -31,7 +31,7 @@ public class DimensionalRiftEvent implements ServerEvent, Listener {
     private final Random random = new Random();
 
     @Override
-    public String getId() { return "dimensional_rift"; }
+    public String getId() { return "mystery.dimensional_rift"; }
     @Override
     public String getDisplayName() { return "Dimensional Rift"; }
     @Override

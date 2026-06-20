@@ -1,5 +1,6 @@
 package cloud.playstorm.cloudfallcore.events.reward;
 
+import cloud.playstorm.cloudfallcore.CloudFallCore;
 import cloud.playstorm.cloudfallcore.engine.EventCategory;
 import cloud.playstorm.cloudfallcore.engine.EventType;
 import cloud.playstorm.cloudfallcore.engine.ServerEvent;
@@ -42,6 +43,9 @@ public class SupplyDropEvent implements ServerEvent {
     public int getCooldownMinutes() { return 15; }
 
     @Override
+    public int getDurationSeconds() { return 600; }
+
+    @Override
     public boolean isEnabledByDefault() { return true; }
 
     @Override
@@ -60,56 +64,72 @@ public class SupplyDropEvent implements ServerEvent {
             World world = chosen.getWorld();
             Location base = chosen.getLocation();
 
-            // Random offset 50-150 blocks in X and Z
-            int offsetX = (random.nextBoolean() ? 1 : -1) * (50 + random.nextInt(101));
-            int offsetZ = (random.nextBoolean() ? 1 : -1) * (50 + random.nextInt(101));
+            // Spread the drop out a fair, configurable distance in a random
+            // direction so it never lands on top of a player's base.
+            int min = CloudFallCore.getInstance().getConfig()
+                    .getInt("events.reward.supply_drop.settings.min-distance", 120);
+            int max = CloudFallCore.getInstance().getConfig()
+                    .getInt("events.reward.supply_drop.settings.max-distance", 300);
+            if (max <= min) max = min + 50;
+            int distance = min + random.nextInt(max - min);
+            double angle = random.nextDouble() * Math.PI * 2;
 
-            int dropX = base.getBlockX() + offsetX;
-            int dropZ = base.getBlockZ() + offsetZ;
-            int dropY = world.getHighestBlockYAt(dropX, dropZ) + 1;
+            int dropX = base.getBlockX() + (int) (Math.cos(angle) * distance);
+            int dropZ = base.getBlockZ() + (int) (Math.sin(angle) * distance);
 
-            // Place the chest
-            Block block = world.getBlockAt(dropX, dropY, dropZ);
-            block.setType(Material.CHEST);
-            chestLocation = block.getLocation();
+            // Load the drop chunk OFF the main thread so distant terrain
+            // generation never freezes the server (ping spike). The callback
+            // runs back on the main thread.
+            world.getChunkAtAsync(dropX >> 4, dropZ >> 4).thenAccept(chunk -> {
+                try {
+                    int dropY = world.getHighestBlockYAt(dropX, dropZ) + 1;
 
-            // Fill the chest with loot
-            if (block.getState() instanceof Chest chest) {
-                Inventory inv = chest.getBlockInventory();
+                    // Place the chest
+                    Block block = world.getBlockAt(dropX, dropY, dropZ);
+                    block.setType(Material.CHEST);
+                    chestLocation = block.getLocation();
 
-                inv.addItem(new ItemStack(Material.DIAMOND, 2 + random.nextInt(3)));
-                inv.addItem(new ItemStack(Material.EMERALD, 1 + random.nextInt(3)));
-                inv.addItem(new ItemStack(Material.IRON_INGOT, 16 + random.nextInt(17)));
-                inv.addItem(new ItemStack(Material.GOLD_INGOT, 8 + random.nextInt(9)));
-                inv.addItem(new ItemStack(Material.GOLDEN_APPLE, 4));
+                    // Fill the chest with loot
+                    if (block.getState() instanceof Chest chest) {
+                        Inventory inv = chest.getBlockInventory();
 
-                // Enchanted book with a random enchantment
-                ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
-                EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
-                Enchantment[] enchants = Enchantment.values();
-                Enchantment chosen_enchant = enchants[random.nextInt(enchants.length)];
-                int level = 1 + random.nextInt(chosen_enchant.getMaxLevel());
-                meta.addStoredEnchant(chosen_enchant, level, true);
-                book.setItemMeta(meta);
-                inv.addItem(book);
+                        inv.addItem(new ItemStack(Material.DIAMOND, 2 + random.nextInt(3)));
+                        inv.addItem(new ItemStack(Material.EMERALD, 1 + random.nextInt(3)));
+                        inv.addItem(new ItemStack(Material.IRON_INGOT, 16 + random.nextInt(17)));
+                        inv.addItem(new ItemStack(Material.GOLD_INGOT, 8 + random.nextInt(9)));
+                        inv.addItem(new ItemStack(Material.GOLDEN_APPLE, 4));
 
-                chest.update();
-            }
+                        // Enchanted book with a random enchantment
+                        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
+                        EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
+                        Enchantment[] enchants = Enchantment.values();
+                        Enchantment chosen_enchant = enchants[random.nextInt(enchants.length)];
+                        int level = 1 + random.nextInt(chosen_enchant.getMaxLevel());
+                        meta.addStoredEnchant(chosen_enchant, level, true);
+                        book.setItemMeta(meta);
+                        inv.addItem(book);
 
-            // Broadcast
-            MessageUtil.broadcast(String.format(
-                    "<color:#ffaa00>📦 SUPPLY DROP at X: %d, Z: %d! First to reach it wins!</color>",
-                    dropX, dropZ
-            ));
-            MessageUtil.broadcastTitle(
-                    "<color:#ffaa00>📦 Supply Drop!</color>",
-                    "<gray>Check chat for coordinates!</gray>",
-                    10, 60, 20
-            );
+                        chest.update();
+                    }
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-            }
+                    // Broadcast
+                    MessageUtil.broadcast(String.format(
+                            "<color:#ffaa00>📦 SUPPLY DROP at X: %d, Z: %d! First to reach it wins!</color>",
+                            dropX, dropZ
+                    ));
+                    MessageUtil.broadcastTitle(
+                            "<color:#ffaa00>📦 Supply Drop!</color>",
+                            "<gray>Check chat for coordinates!</gray>",
+                            10, 60, 20
+                    );
+
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

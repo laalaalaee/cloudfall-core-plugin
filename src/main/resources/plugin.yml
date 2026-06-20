@@ -2,8 +2,10 @@ name: CloudFallCore
 version: '${project.version}'
 main: cloud.playstorm.cloudfallcore.CloudFallCore
 api-version: '1.21'
-authors: [ "Antigravity" ]
-description: Core plugin for CloudFall SMP with support, ranks, and fun mechanics.
+authors: [ "laalaalaee" ]
+description: A Living World Engine that fills your server with dynamic events, rewards, and challenges. Built for engagement.
+website: https://github.com/laalaalaee/cloudfall-core-plugin
+softdepend: [ Vault ]
 
 commands:
   support:
@@ -13,3 +15,12 @@ commands:
     description: Shows rank information
   buykits:
     description: Shows how to buy kits to get items back
+  cloudfall:
+    description: Admin command for CloudFall Core (reload, trigger, list)
+    aliases: [ "cfc", "cfcore" ]
+    permission: cloudfall.admin
+
+permissions:
+  cloudfall.admin:
+    description: Allows use of the /cloudfall admin command
+    default: op

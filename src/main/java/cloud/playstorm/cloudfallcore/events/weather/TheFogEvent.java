@@ -28,6 +28,9 @@ public class TheFogEvent implements ServerEvent {
     public int getCooldownMinutes() { return 15; }
 
     @Override
+    public int getDurationSeconds() { return 180; }
+
+    @Override
     public boolean isEnabledByDefault() { return true; }
 
     @Override

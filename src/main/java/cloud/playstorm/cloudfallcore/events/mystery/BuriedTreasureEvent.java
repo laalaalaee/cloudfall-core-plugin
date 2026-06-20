@@ -18,7 +18,7 @@ public class BuriedTreasureEvent implements ServerEvent {
     private final Random random = new Random();
 
     @Override
-    public String getId() { return "buried_treasure"; }
+    public String getId() { return "mystery.buried_treasure"; }
     @Override
     public String getDisplayName() { return "Buried Treasure"; }
     @Override

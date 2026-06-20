@@ -23,7 +23,7 @@ public class GoldenHourEvent implements ServerEvent, Listener {
     private BukkitTask timeoutTask;
 
     @Override
-    public String getId() { return "golden_hour"; }
+    public String getId() { return "reward.golden_hour"; }
     @Override
     public String getDisplayName() { return "Golden Hour"; }
     @Override

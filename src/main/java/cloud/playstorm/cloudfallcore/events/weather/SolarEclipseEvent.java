@@ -29,6 +29,9 @@ public class SolarEclipseEvent implements ServerEvent {
     public int getCooldownMinutes() { return 10; }
 
     @Override
+    public int getDurationSeconds() { return 300; }
+
+    @Override
     public boolean isEnabledByDefault() { return true; }
 
     @Override
