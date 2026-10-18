@@ -6,6 +6,7 @@ import cloud.playstorm.cloudfallcore.commands.CloudFallCommand;
 import cloud.playstorm.cloudfallcore.commands.SupportCommand;
 import cloud.playstorm.cloudfallcore.engine.EventEngine;
 import cloud.playstorm.cloudfallcore.tasks.AutoBroadcaster;
+import cloud.playstorm.cloudfallcore.util.ConfigUpdater;
 import cloud.playstorm.cloudfallcore.util.EconomyHook;
 import cloud.playstorm.cloudfallcore.util.VersionChecker;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +35,7 @@ public final class CloudFallCore extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        ConfigUpdater.update(this);
 
         // Optional economy hook (Vault).
         economy = new EconomyHook(this);
