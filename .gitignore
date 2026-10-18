@@ -45,3 +45,4 @@ private/
 config-smp-backup.yml
 config-cloudfall-smp.yml
 
+apache-maven-*/
